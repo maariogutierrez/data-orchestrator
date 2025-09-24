@@ -1,0 +1,13 @@
+{
+    "common": {
+        "Number of trips": {
+                "query": {"size": 0,"track_total_hits": true}       
+            },
+        "Trips per vendor": {
+                "query": {"size":0,"aggs":{"trips_per_vendor":{"terms":{"field":"VendorID"}}}}
+            }
+    },
+    "uncommon": {
+
+    }
+}
