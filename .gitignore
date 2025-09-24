@@ -1,0 +1,5 @@
+# Ignorar todo en la carpeta data/
+ingestion/data/*
+
+# Excepto el archivo .gitkeep para mantener la carpeta
+!ingestion/data/.gitkeep
