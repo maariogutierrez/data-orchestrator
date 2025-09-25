@@ -30,8 +30,8 @@ services:
 
   api_common_questions:
     build: 
-      context: .
-      dockerfile: ./api_common_questions
+      context: ..
+      dockerfile: ./deployment/api_common_questions/Dockerfile
     ports:
       - "8000:8000"
     depends_on:
@@ -39,10 +39,10 @@ services:
 
   api_question_handler:
     build: 
-      context: .
-      dockerfile: ./question_handler
+      context: ..
+      dockerfile: ./deployment/api_question_handler/Dockerfile
     ports:
-      - "8000:8081"
+      - "8001:8081"
     depends_on:
       - elasticsearch
 
