@@ -1,13 +1,17 @@
 {
     "common": {
-        "Number of trips": {
-                "query": {"size": 0,"track_total_hits": true}       
-            },
-        "Trips per vendor": {
-                "query": {"size":0,"aggs":{"trips_per_vendor":{"terms":{"field":"VendorID"}}}}
-            }
+        "Number of trips": {"query": {"size": 0, "track_total_hits": true}},
+        "Trips per vendor": {"query": {"size": 0, "aggs": {"trips_per_vendor": {"terms": {"field": "VendorID"}}}}},
+        "Trips per payment type": {"query": {"size": 0, "aggs": {"trips_per_payment": {"terms": {"field": "payment_type"}}}}},
+        "Average trip distance": {"query": {"size": 0, "aggs": {"avg_distance": {"avg": {"field": "trip_distance"}}}}},
+        "Total revenue": {"query": {"size": 0, "aggs": {"total_revenue": {"sum": {"field": "total_amount"}}}}},
+        "Average passengers per trip": {"query": {"size": 0, "aggs": {"avg_passengers": {"avg": {"field": "passenger_count"}}}}}
     },
     "uncommon": {
-
+        "Max trip distance": {"query": {"size": 0, "aggs": {"max_distance": {"max": {"field": "trip_distance"}}}}},
+        "Average trip duration": {"query": {"size": 0, "aggs": {"avg_duration": {"avg": {"field": "trip_duration"}}}}},
+        "Trips per pickup location": {"query": {"size": 0, "aggs": {"trips_per_pu": {"terms": {"field": "PULocationID"}}}}},
+        "Average tip per payment type": {"query": {"size": 0, "aggs": {"avg_tip_payment": {"terms": {"field": "payment_type"}, "aggs": {"avg_tip": {"avg": {"field": "tip_amount"}}}}}}},
+        "Revenue per vendor": {"query": {"size": 0, "aggs": {"revenue_vendor": {"terms": {"field": "VendorID"}, "aggs": {"total_revenue": {"sum": {"field": "total_amount"}}}}}}}
     }
 }
