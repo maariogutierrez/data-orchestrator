@@ -1,51 +1,50 @@
-version: '3.8'
-
 services:
   elasticsearch:
-    build: ./elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTIC_PASSWORD=prontotodoacabara
     ports:
       - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
 
   kibana:
-    build: ./kibana
+    image: bitnami/kibana:8.10.3
     ports:
       - "5601:5601"
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=prontotodoacabara
     depends_on:
       - elasticsearch
 
   mongodb:
-    build: ./mongodb
+    image: mongo:8.0.14
     ports:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
 
-  api:
-    build: ./api
+  api_common_questions:
+    build: 
+      context: .
+      dockerfile: ./api_common_questions
     ports:
       - "8000:8000"
     depends_on:
-      - mongodb
       - elasticsearch
 
-  airflow:
-    build: ./airflow
-    environment:
-      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////usr/local/airflow/airflow.db
+  api_question_handler:
+    build: 
+      context: .
+      dockerfile: ./question_handler
     ports:
-      - "8080:8080"
-    volumes:
-      - ./airflow/dags:/opt/airflow/dags
+      - "8000:8081"
     depends_on:
-      - mongodb
+      - elasticsearch
 
 volumes:
   esdata:
