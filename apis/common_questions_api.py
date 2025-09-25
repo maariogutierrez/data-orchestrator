@@ -1,6 +1,8 @@
 from elasticsearch import Elasticsearch
 import csv
+import json
 from logger import get_logger
+import os
 
 logger = get_logger(__name__)
 
@@ -10,46 +12,39 @@ es = Elasticsearch(hosts=["http://localhost:9200"],
 
 def common_questions(index):
     logger.info("Starting common questions for index: %s", index)
-<<<<<<< HEAD
-    #1. Number of trips
-    result = es.count(index=index)
-    count = result.get('count', 0)
-    logger.info("Number of trips: %d", count)
+    
+    # Load common questions from JSON file
+    questions_path = os.path.join(os.path.dirname(__file__), "../questions/questions.json")
+    with open(questions_path, "r", encoding="utf-8") as f:
+        questions_data = json.load(f)
+    common_questions = questions_data.get("common", {})
 
-    #2. Trips per vendor
-    trips_per_vendor = es.search(
-        index=index,
-        size=0,
-        aggs={
-            "trips_per_vendor": {"terms": {"field": "VendorID"}}
-        }
-    )
-    logger.info("Trips per vendor: %s", trips_per_vendor)
-
-    #3. Average trip distance
-    average_distance = es.search(
-        index=index,
-        size=0,
-        aggs={"average_distance": {"avg": {"field": "trip_distance"}}}
-    )
-    logger.info("Average trip distance: %s", average_distance)
+    results = []
+    for question, query_data in common_questions.items():
+        query = query_data.get("query", {})
+        try:
+            response = es.search(index=index, **query)
+            # Try to extract aggregation or count results
+            if "aggs" in query:
+                aggs_key = list(query["aggs"].keys())[0]
+                value = response["aggregations"][aggs_key]
+            elif "track_total_hits" in query or query.get("size", 0) == 0:
+                value = response["hits"]["total"]["value"]
+            else:
+                value = response
+            results.append([question, value])
+            logger.info("Question: %s | Result: %s", question, value)
+        except Exception as e:
+            logger.error("Error processing question '%s': %s", question, str(e))
+            results.append([question, "Error"])
 
     # Save results to CSV
-    csv_path = "../common_questions/answers.csv"
+    csv_path = os.path.join(os.path.dirname(__file__), "../common_questions/answers.csv")
     with open(csv_path, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(['Question', 'Answer'])
-        writer.writerow(['Number of trips', count])
-        writer.writerow(['Trips per vendor', trips_per_vendor])
-        writer.writerow(['Average trip distance', average_distance])
-        logger.info("Results saved to %s", csv_path)
-=======
-    
-    # Access the JSON file of common questions
-
-
-    # Save results to CSV
->>>>>>> f78cd75b46e0bfea4ccbc62ab08693be56595168
+        writer.writerows(results)
+    logger.info("Results saved to %s", csv_path)
 
 if __name__ == "__main__":
     index_name = "data"
