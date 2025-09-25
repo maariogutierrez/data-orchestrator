@@ -10,6 +10,7 @@ es = Elasticsearch(hosts=["http://localhost:9200"],
 
 def common_questions(index):
     logger.info("Starting common questions for index: %s", index)
+<<<<<<< HEAD
     #1. Number of trips
     result = es.count(index=index)
     count = result.get('count', 0)
@@ -42,6 +43,13 @@ def common_questions(index):
         writer.writerow(['Trips per vendor', trips_per_vendor])
         writer.writerow(['Average trip distance', average_distance])
         logger.info("Results saved to %s", csv_path)
+=======
+    
+    # Access the JSON file of common questions
+
+
+    # Save results to CSV
+>>>>>>> f78cd75b46e0bfea4ccbc62ab08693be56595168
 
 if __name__ == "__main__":
     index_name = "data"

@@ -1,7 +1,20 @@
+<<<<<<< HEAD
 # ingestion/src/open_csv.py
 import pandas as pd
 import os
 
+=======
+import gdown
+import pandas as pd
+import os
+
+def download_file_from_google_drive(file_id, destination):
+
+    os.makedirs(os.path.dirname(destination), exist_ok=True)
+    url = f'https://drive.google.com/uc?id={file_id}'
+    gdown.download(url, destination, quiet=False)
+
+>>>>>>> f78cd75b46e0bfea4ccbc62ab08693be56595168
 def load_and_preview_csv(csv_path):
     if not os.path.exists(csv_path):
         print(f"El archivo {csv_path} no existe.")
@@ -15,5 +28,15 @@ def load_and_preview_csv(csv_path):
     return df
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     csv_file_path = "ingestion/data/rows.csv"
     load_and_preview_csv(csv_file_path)
+=======
+
+    file_id = '1NHGHPg1LzmCKhc7TYsg45aN5jfNhgr_4'
+    csv_file_path = 'ingestion/data/Datos_format.csv'
+    
+    download_file_from_google_drive(file_id, csv_file_path)
+    
+    load_and_preview_csv(csv_file_path)
+>>>>>>> f78cd75b46e0bfea4ccbc62ab08693be56595168
