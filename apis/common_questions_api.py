@@ -25,15 +25,8 @@ def common_questions(index):
         try:
             response = es.search(index=index, **query)
             # Try to extract aggregation or count results
-            if "aggs" in query:
-                aggs_key = list(query["aggs"].keys())[0]
-                value = response["aggregations"][aggs_key]
-            elif "track_total_hits" in query or query.get("size", 0) == 0:
-                value = response["hits"]["total"]["value"]
-            else:
-                value = response
-            results.append([question, value])
-            logger.info("Question: %s | Result: %s", question, value)
+            results.append([question, response])
+            logger.info("Question: %s | Result: %s", question, response)
         except Exception as e:
             logger.error("Error processing question '%s': %s", question, str(e))
             results.append([question, "Error"])
