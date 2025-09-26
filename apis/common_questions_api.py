@@ -7,8 +7,7 @@ import os
 logger = get_logger(__name__)
 
 # Initialize the Elasticsearch client
-es = Elasticsearch(hosts=["http://localhost:9200"],
-                   http_auth=("elastic", "prontotodoacabara"))  
+es = Elasticsearch(hosts=["http://elasticsearch:9200"])  
 
 def common_questions(index):
     logger.info("Starting common questions for index: %s", index)

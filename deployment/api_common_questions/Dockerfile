@@ -1,8 +1,7 @@
 FROM python:3.12-slim
 
-
-COPY questions/ ./questions/
-COPY common_questions /.
+COPY questions/ /questions/
+COPY common_questions/ /common_questions/
 
 # Definir el directorio de trabajo
 WORKDIR /app
