@@ -1,6 +1,6 @@
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.3
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
@@ -9,6 +9,8 @@ services:
       - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
+    networks:
+      - appnet
 
   kibana:
     image: bitnami/kibana:8.10.3
@@ -20,6 +22,8 @@ services:
       - ELASTICSEARCH_PASSWORD=prontotodoacabara
     depends_on:
       - elasticsearch
+    networks:
+      - appnet
 
   mongodb:
     image: mongo:8.0.14
@@ -27,6 +31,8 @@ services:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+    networks:
+      - appnet
 
   api_common_questions:
     build: 
@@ -36,16 +42,13 @@ services:
       - "8000:8000"
     depends_on:
       - elasticsearch
-
-  api_question_handler:
-    build: 
-      context: ..
-      dockerfile: ./deployment/api_question_handler/Dockerfile
-    ports:
-      - "8001:8081"
-    depends_on:
-      - elasticsearch
+    networks:
+      - appnet
 
 volumes:
   esdata:
   mongodata:
+
+networks:
+  appnet:
+    driver: bridge
