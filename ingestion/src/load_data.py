@@ -40,3 +40,4 @@ if not es.indices.exists(index=ES_INDEX):
 actions = [{"_index": ES_INDEX, "_source": record} for record in records]
 helpers.bulk(es, actions)
 print(f"CSV cargado en Elasticsearch ({len(records)} documentos).")
+
