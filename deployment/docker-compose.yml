@@ -51,6 +51,23 @@ services:
     networks:
       - appnet
 
+  ingestion:
+    build:
+      context: ../ingestion
+      dockerfile: ../ingestion/Dockerfile
+    container_name: ingestion
+    depends_on:
+      mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ../ingestion:/app
+    working_dir: /app/src
+    command: python load_data.py
+    networks:
+      - appnet
+
 volumes:
   esdata:
   mongodata:
