@@ -1,4 +1,3 @@
 pandas
-gdown
 pymongo
-elasticsearch
+elasticsearch==8.10.0
