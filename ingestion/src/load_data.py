@@ -7,11 +7,9 @@ MONGO_URI = "mongodb://mongodb:27017/"
 MONGO_DB = "taxi_data"
 MONGO_COLLECTION = "data"
 ES_URI = "http://elasticsearch:9200"
-ES_USER = "elastic"
-ES_PASSWORD = "prontotodoacabara"
 ES_INDEX = "data"
 
-# Leer el CSV
+# Leemos el CSV
 df = pd.read_csv(CSV_URL)
 print(f"\nCSV cargado desde Google Drive")
 print(f"Forma: {df.shape[0]} filas x {df.shape[1]} columnas")
@@ -20,26 +18,26 @@ print(df.head())
 
 records = df.to_dict("records")
 
-# Cargar en MongoDB
-
+# Cargamos datos en MongoDB
 mongo_client = MongoClient(MONGO_URI)
 mongo_db = mongo_client[MONGO_DB]
 mongo_col = mongo_db[MONGO_COLLECTION]
 
-# Limpiar colección antes de insertar (opcional)
+# Limpiamos la colección antes de insertar (opcional)
 mongo_col.delete_many({})
 mongo_col.insert_many(records)
 print(f"\nCSV cargado en MongoDB ({len(records)} documentos).")
 
-# Cargar en Elasticsearch
-
-es = Elasticsearch([ES_URI], basic_auth=(ES_USER, ES_PASSWORD))
+# Cargamos en Elasticsearch (sin usuario ni contraseña)
+es = Elasticsearch([ES_URI])
 
 # Crear índice si no existe
 if not es.indices.exists(index=ES_INDEX):
     es.indices.create(index=ES_INDEX)
     print(f"Índice '{ES_INDEX}' creado en Elasticsearch.")
 
+# Insertamos los documentos
 actions = [{"_index": ES_INDEX, "_source": record} for record in records]
 helpers.bulk(es, actions)
 print(f"CSV cargado en Elasticsearch ({len(records)} documentos).")
+
