@@ -1,91 +1,145 @@
 version: "3.1"
 
 nlu:
-- intent: greet
+- intent: numberoftrips
   examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+    - ¿Cuántos viajes se han registrado?
+    - Dame el número total de trayectos.
+    - ¿Cuál es la cantidad de viajes?
+    - Quiero saber el total de carreras realizadas.
+    - ¿Me dices cuántos viajes hubo en total?
+    - ¿Cuál es el número de servicios completados?
+    - Muéstrame la cantidad global de viajes.
+    - ¿Cuántas carreras hay en el sistema?
+    - Dime el total de viajes hechos.
+    - ¿Cuántos trayectos se han realizado?
 
-- intent: goodbye
+- intent: tripspervendor
   examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+    - ¿Cuántos viajes hizo cada proveedor?
+    - Dame el número de trayectos por empresa.
+    - Quiero ver los viajes por cada vendor.
+    - ¿Cuántas carreras tiene registrado cada proveedor?
+    - Muéstrame la distribución de viajes por compañía.
+    - ¿Cuál es la cantidad de viajes por vendor?
+    - Lista los trayectos separados por proveedor.
+    - ¿Cuántos servicios hizo cada compañía?
+    - ¿Cómo se reparten los viajes entre proveedores?
+    - Dame viajes por proveedor.
 
-- intent: affirm
+- intent: tripsperpaymenttype
   examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+    - ¿Cuántos viajes se pagaron en efectivo?
+    - Dime la cantidad de trayectos por tipo de pago.
+    - ¿Cuántas carreras se pagaron con tarjeta?
+    - Muéstrame los viajes según método de pago.
+    - ¿Cuál es el número de viajes en cada forma de pago?
+    - Dame los trayectos separados por tipo de pago.
+    - ¿Cómo se distribuyen los viajes por método de pago?
+    - Quiero saber viajes por forma de pago.
+    - ¿Hay más viajes pagados en efectivo o con tarjeta?
+    - Dime el número de carreras por tipo de pago.
 
-- intent: deny
+- intent: averagetripdistance
   examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+    - ¿Cuál es la distancia promedio de los viajes?
+    - Dime la media de kilómetros recorridos.
+    - Quiero saber la distancia promedio por trayecto.
+    - ¿Cuántos km en promedio dura un viaje?
+    - Dame la distancia media de las carreras.
+    - ¿Cuál es la distancia habitual de los viajes?
+    - Muéstrame la media de distancia recorrida.
+    - ¿Qué distancia promedio tienen los trayectos?
+    - Dime el promedio de km por servicio.
+    - ¿Cuál es la distancia media de un trayecto?
 
-- intent: mood_great
+- intent: totalrevenue
   examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+    - ¿Cuánto dinero se generó en total?
+    - Dame el ingreso total de los viajes.
+    - ¿Cuál es la facturación completa?
+    - Dime la recaudación total.
+    - ¿Cuánto se ganó con todos los trayectos?
+    - Muéstrame los ingresos totales.
+    - ¿Cuál es la suma de ingresos?
+    - ¿Qué ganancia total se obtuvo?
+    - Dime los ingresos globales.
+    - ¿Cuánto dinero se facturó?
 
-- intent: mood_unhappy
+- intent: averagepassengerspertrip
   examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+    - ¿Cuál es el promedio de pasajeros por viaje?
+    - Dime la media de pasajeros por trayecto.
+    - ¿Cuántos pasajeros suelen ir en promedio?
+    - Dame la cantidad media de pasajeros.
+    - ¿Cuál es el número medio de pasajeros?
+    - ¿Qué promedio de clientes hay por servicio?
+    - Muéstrame el promedio de ocupación por viaje.
+    - ¿Cuántas personas en promedio viajan?
+    - Dime pasajeros promedio por trayecto.
+    - ¿Cuál es la media de pasajeros por carrera?
 
-- intent: bot_challenge
+- intent: maxtripdistance
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - ¿Cuál fue el viaje más largo?
+    - Dime la distancia máxima registrada.
+    - ¿Qué trayecto tuvo más kilómetros?
+    - Dame el recorrido más extenso.
+    - ¿Cuál es la carrera con mayor distancia?
+    - Muéstrame el trayecto más largo.
+    - ¿Qué viaje recorrió más kilómetros?
+    - Dime la distancia máxima en los datos.
+    - ¿Cuál es el viaje más extenso?
+    - ¿Qué trayecto fue el más largo?
+
+- intent: averagetripduration
+  examples: |
+    - ¿Cuál es la duración media de los viajes?
+    - Dime cuánto dura en promedio un trayecto.
+    - ¿Qué tiempo promedio toma un viaje?
+    - Dame la duración media de las carreras.
+    - ¿Cuál es el tiempo habitual de los trayectos?
+    - Muéstrame la media de duración de viajes.
+    - ¿Qué duración promedio tienen los viajes?
+    - Dime los minutos promedio por viaje.
+    - ¿Cuánto suelen durar los trayectos?
+    - Dame el promedio de tiempo de viaje.
+
+- intent: tripsperpickuplocation
+  examples: |
+    - ¿Cuántos viajes empiezan en cada zona?
+    - Dime el número de trayectos por ubicación de recogida.
+    - ¿Cuál es la cantidad de viajes por lugar de inicio?
+    - Dame los trayectos organizados por pickup location.
+    - ¿Cuántas carreras comienzan en cada barrio?
+    - Muéstrame viajes por lugar de recogida.
+    - ¿Qué zonas tienen más salidas?
+    - Dime la cantidad de viajes por punto de recogida.
+    - ¿Cuántos trayectos salen desde cada ubicación?
+    - Dame el total de viajes por zona de origen.
+
+- intent: averagetipperpaymenttype
+  examples: |
+    - ¿Cuál es la propina media por tipo de pago?
+    - Dime la media de propinas según el método de pago.
+    - ¿Qué forma de pago tiene mayor promedio de propina?
+    - Dame la propina promedio por tipo de pago.
+    - ¿Cuál es el pago medio de propina en efectivo?
+    - ¿Qué método de pago genera más propina?
+    - Muéstrame el promedio de propina por tipo de pago.
+    - ¿Cómo varían las propinas según la forma de pago?
+    - Dime la media de tips por método de pago.
+    - ¿Qué tipo de pago deja mayor propina en promedio?
+
+- intent: revenuepervendor
+  examples: |
+    - ¿Cuánto dinero ganó cada proveedor?
+    - Dame los ingresos por vendor.
+    - ¿Cuál es la facturación por empresa?
+    - Muéstrame la recaudación por compañía.
+    - ¿Cuánto ingresó cada proveedor?
+    - Dime los ingresos separados por vendor.
+    - ¿Cuál es la ganancia por empresa?
+    - Dame la distribución de ingresos por proveedor.
+    - ¿Qué vendor generó más ingresos?
+    - Dime ingresos por proveedor.
