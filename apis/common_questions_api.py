@@ -9,6 +9,28 @@ logger = get_logger(__name__)
 # Initialize the Elasticsearch client
 es = Elasticsearch(hosts=["http://elasticsearch:9200"])  
 
+
+def extract_value(response: dict):
+    """Extrae el valor más relevante de la respuesta de Elasticsearch."""
+    # Si hay agregaciones, devuelve el primer valor/buckets
+    if "aggregations" in response:
+        agg = response["aggregations"]
+        # Tomar la primera agregación
+        agg_name, agg_data = next(iter(agg.items()))
+        if "value" in agg_data:
+            return agg_data["value"]  # Ej: promedio, suma, etc.
+        if "buckets" in agg_data:
+            return agg_data["buckets"]  # Lista de buckets
+        return agg_data
+
+    # Si no hay agregaciones, devolver el total de hits
+    if "hits" in response and "total" in response["hits"]:
+        return response["hits"]["total"]["value"]
+
+    # Si nada aplica, devolver todo
+    return response
+
+
 def common_questions(index):
     logger.info("Starting common questions for index: %s", index)
     
@@ -23,9 +45,9 @@ def common_questions(index):
         query = query_data.get("query", {})
         try:
             response = es.search(index=index, **query)
-            # Try to extract aggregation or count results
-            results.append([question, response])
-            logger.info("Question: %s | Result: %s", question, response)
+            value = extract_value(response)  # ✅ guardamos solo el value
+            results.append([question, value])
+            logger.info("Question: %s | Result: %s", question, value)
         except Exception as e:
             logger.error("Error processing question '%s': %s", question, str(e))
             results.append([question, "Error"])
@@ -37,6 +59,7 @@ def common_questions(index):
         writer.writerow(['Question', 'Answer'])
         writer.writerows(results)
     logger.info("Results saved to %s", csv_path)
+
 
 if __name__ == "__main__":
     index_name = "data"
