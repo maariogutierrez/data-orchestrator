@@ -28,6 +28,9 @@ mongo_col.delete_many({})
 mongo_col.insert_many(records)
 print(f"\nCSV cargado en MongoDB ({len(records)} documentos).")
 
+# Para Elasticsearch regeneramos records directamente desde el DataFrame en vez del sobrescribir sobre mongo
+records_for_es = df.to_dict("records")
+
 # Cargamos en Elasticsearch (sin usuario ni contraseña)
 es = Elasticsearch([ES_URI])
 
@@ -37,7 +40,7 @@ if not es.indices.exists(index=ES_INDEX):
     print(f"Índice '{ES_INDEX}' creado en Elasticsearch.")
 
 # Insertamos los documentos
-actions = [{"_index": ES_INDEX, "_source": record} for record in records]
+actions = [{"_index": ES_INDEX, "_source": record} for record in records_for_es]
 helpers.bulk(es, actions)
-print(f"CSV cargado en Elasticsearch ({len(records)} documentos).")
+print(f"CSV cargado en Elasticsearch ({len(records_for_es)} documentos).")
 
