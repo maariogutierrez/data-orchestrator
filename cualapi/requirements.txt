@@ -1,4 +1,0 @@
-flask
-elasticsearch
-json
-csv
