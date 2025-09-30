@@ -41,8 +41,11 @@ services:
 
   api_common_questions:
     build: 
-      context: ../apis
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: apis/Dockerfile
+    volumes:
+      - ../questions:/questions
+      - ../common_questions:/common_questions
     ports:
       - "8000:8000"
     depends_on:
