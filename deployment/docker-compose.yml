@@ -41,8 +41,8 @@ services:
 
   api_common_questions:
     build: 
-      context: ..
-      dockerfile: ./deployment/api_common_questions/Dockerfile
+      context: ../apis
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
@@ -54,7 +54,7 @@ services:
   ingestion:
     build:
       context: ../ingestion
-      dockerfile: ../ingestion/Dockerfile
+      dockerfile: Dockerfile
     container_name: ingestion
     depends_on:
       mongodb:
