@@ -1,6 +1,32 @@
 version: "3.1"
 
 nlu:
+- intent: hello
+  examples: |
+    - hola
+    - buenas
+    - qué tal
+    - hola, ¿cómo estás?
+    - buenas tardes
+    - buenos días
+    - hey
+    - hola amigo
+    - qué onda
+    - buenas noches
+
+- intent: bye
+  examples: |
+    - adiós
+    - hasta luego
+    - nos vemos
+    - chao
+    - hasta pronto
+    - que tengas un buen día
+    - me despido
+    - hablamos luego
+    - cuídate
+    - hasta la próxima
+
 - intent: numberoftrips
   examples: |
     - ¿Cuántos viajes se han registrado?
