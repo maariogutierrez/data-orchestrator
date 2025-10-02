@@ -2,29 +2,56 @@ version: "3.1"
 
 stories:
 
-- story: happy path
+- story: saludo y despedida
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
+  - intent: hello
+  - action: action_hello
+  - intent: bye
+  - action: action_bye
 
-- story: sad path 1
+- story: consulta de viajes totales
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+  - intent: hello
+  - action: action_hello
+  - intent: numberoftrips
+  - action: action_number_of_trips
+  - intent: bye
+  - action: action_bye
 
-- story: sad path 2
+- story: consulta de viajes por proveedor
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+  - intent: hello
+  - action: action_hello
+  - intent: tripspervendor
+  - action: action_trips_per_vendor
+
+- story: consulta de distancia media
+  steps:
+  - intent: hello
+  - action: action_hello
+  - intent: averagetripdistance
+  - action: action_average_trip_distance
+
+- story: ingresos totales
+  steps:
+  - intent: totalrevenue
+  - action: action_total_revenue
+
+- story: propina media por tipo de pago
+  steps:
+  - intent: averagetipperpaymenttype
+  - action: action_average_tip_per_payment_type
+
+- story: duración media de trayectos
+  steps:
+  - intent: averagetripduration
+  - action: action_average_trip_duration
+
+- story: flujo con error
+  steps:
+  - intent: hello
+  - action: action_hello
+  - intent: no_access
+  - action: action_no_acceso
+  - intent: bye
+  - action: action_bye

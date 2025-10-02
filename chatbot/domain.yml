@@ -1,33 +1,53 @@
 version: "3.1"
 
 intents:
-  - greet
-  - goodbye
+  - hello
+  - bye
+  - numberoftrips
+  - tripspervendor
+  - tripsperpaymenttype
+  - averagetripdistance
+  - totalrevenue
+  - averagepassengerspertrip
+  - maxtripdistance
+  - averagetripduration
+  - tripsperpickuplocation
+  - averagetipperpaymenttype
+  - revenuepervendor
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
   - bot_challenge
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
+  - text: "¡Hola! Soy tu asistente para datos de taxis. Pregúntame lo que quieras."
 
   utter_goodbye:
-  - text: "Bye"
+  - text: "¡Adiós! Espero haberte ayudado manin."
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  - text: "Soy un bot desarrollado con IA especializado en datos de taxis."
+
+  utter_no_access:
+  - text: "Lo siento, no tengo acceso a esa información."
+
+#El resto ya se encuentran respondidas en actions.py
+
+actions:
+  - action_hello∫
+  - action_bye
+  - action_number_of_trips
+  - action_trips_per_vendor
+  - action_trips_per_payment_type
+  - action_average_trip_distance
+  - action_total_revenue
+  - action_average_passengers_per_trip
+  - action_max_trip_distance
+  - action_average_trip_duration
+  - action_trips_per_pickup_location
+  - action_average_tip_per_payment_type
+  - action_revenue_per_vendor
+  - action_no_acceso
 
 session_config:
   session_expiration_time: 60

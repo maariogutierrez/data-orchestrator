@@ -1,91 +1,101 @@
 #### This file contains tests to evaluate that your bot behaves as expected.
 #### If you want to learn more, please see the docs: https://rasa.com/docs/rasa/testing-your-assistant
 
+version: "3.1"
+
 stories:
-- story: happy path 1
-  steps:
-  - user: |
-      hello there!
-    intent: greet
-  - action: utter_greet
-  - user: |
-      amazing
-    intent: mood_great
-  - action: utter_happy
 
-- story: happy path 2
+- story: saludo y despedida
   steps:
   - user: |
-      hello there!
-    intent: greet
-  - action: utter_greet
+      hola
+    intent: hello
+  - action: action_hello
   - user: |
-      amazing
-    intent: mood_great
-  - action: utter_happy
-  - user: |
-      bye-bye!
-    intent: goodbye
-  - action: utter_goodbye
+      adiós
+    intent: bye
+  - action: action_bye
 
-- story: sad path 1
+- story: número de viajes
   steps:
   - user: |
-      hello
-    intent: greet
-  - action: utter_greet
-  - user: |
-      not good
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      yes
-    intent: affirm
-  - action: utter_happy
+      ¿Cuántos viajes se han registrado?
+    intent: numberoftrips
+  - action: action_number_of_trips
 
-- story: sad path 2
+- story: viajes por proveedor
   steps:
   - user: |
-      hello
-    intent: greet
-  - action: utter_greet
-  - user: |
-      not good
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      not really
-    intent: deny
-  - action: utter_goodbye
+      ¿Cuántos viajes hizo cada proveedor?
+    intent: tripspervendor
+  - action: action_trips_per_vendor
 
-- story: sad path 3
+- story: viajes por tipo de pago
   steps:
   - user: |
-      hi
-    intent: greet
-  - action: utter_greet
-  - user: |
-      very terrible
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      no
-    intent: deny
-  - action: utter_goodbye
+      ¿Cuántos viajes se pagaron en efectivo?
+    intent: tripsperpaymenttype
+  - action: action_trips_per_payment_type
 
-- story: say goodbye
+- story: distancia media de viajes
   steps:
   - user: |
-      bye-bye!
-    intent: goodbye
-  - action: utter_goodbye
+      ¿Cuál es la distancia promedio de los viajes?
+    intent: averagetripdistance
+  - action: action_average_trip_distance
 
-- story: bot challenge
+- story: ingresos totales
   steps:
   - user: |
-      are you a bot?
-    intent: bot_challenge
-  - action: utter_iamabot
+      ¿Cuánto dinero se generó en total?
+    intent: totalrevenue
+  - action: action_total_revenue
+
+- story: pasajeros promedio
+  steps:
+  - user: |
+      ¿Cuál es el promedio de pasajeros por viaje?
+    intent: averagepassengerspertrip
+  - action: action_average_passengers_per_trip
+
+- story: viaje más largo
+  steps:
+  - user: |
+      ¿Cuál fue el viaje más largo?
+    intent: maxtripdistance
+  - action: action_max_trip_distance
+
+- story: duración media de los viajes
+  steps:
+  - user: |
+      ¿Cuál es la duración media de los viajes?
+    intent: averagetripduration
+  - action: action_average_trip_duration
+
+- story: viajes por zona de recogida
+  steps:
+  - user: |
+      ¿Cuántos viajes empiezan en cada zona?
+    intent: tripsperpickuplocation
+  - action: action_trips_per_pickup_location
+
+- story: propina media por tipo de pago
+  steps:
+  - user: |
+      ¿Cuál es la propina media por tipo de pago?
+    intent: averagetipperpaymenttype
+  - action: action_average_tip_per_payment_type
+
+- story: ingresos por proveedor
+  steps:
+  - user: |
+      ¿Cuánto dinero ganó cada proveedor?
+    intent: revenuepervendor
+  - action: action_revenue_per_vendor
+
+- story: pregunta sin acceso
+  steps:
+  - user: |
+      ¿Cuántos conductores tienen coche rojo?
+    intent: no_access
+  - action: action_no_acceso
