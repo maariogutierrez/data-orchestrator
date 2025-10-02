@@ -5,30 +5,30 @@ stories:
 - story: saludo y despedida
   steps:
   - intent: hello
-  - action: action_hello
+  - action: utter_greet
   - intent: bye
-  - action: action_bye
+  - action: utter_goodbye
 
 - story: consulta de viajes totales
   steps:
   - intent: hello
-  - action: action_hello
+  - action: utter_greet
   - intent: numberoftrips
   - action: action_number_of_trips
   - intent: bye
-  - action: action_bye
+  - action: utter_goodbye
 
 - story: consulta de viajes por proveedor
   steps:
   - intent: hello
-  - action: action_hello
+  - action: utter_greet
   - intent: tripspervendor
   - action: action_trips_per_vendor
 
 - story: consulta de distancia media
   steps:
   - intent: hello
-  - action: action_hello
+  - action: utter_greet
   - intent: averagetripdistance
   - action: action_average_trip_distance
 
@@ -50,8 +50,8 @@ stories:
 - story: flujo con error
   steps:
   - intent: hello
-  - action: action_hello
+  - action: utter_greet
   - intent: no_access
-  - action: action_no_acceso
+  - action: utter_no_access
   - intent: bye
-  - action: action_bye
+  - action: utter_goodbye

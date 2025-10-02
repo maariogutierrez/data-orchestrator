@@ -169,3 +169,54 @@ nlu:
     - Dame la distribución de ingresos por proveedor.
     - ¿Qué vendor generó más ingresos?
     - Dime ingresos por proveedor.
+- intent: affirm
+  examples: |
+    - sí
+    - correcto
+    - por supuesto
+    - claro
+    - exacto
+    - afirmativo
+    - claro que sí
+    - correcto, gracias
+    - totalmente
+    - de acuerdo
+
+- intent: deny
+  examples: |
+    - no
+    - para nada
+    - nunca
+    - en absoluto
+    - no, gracias
+    - de ninguna manera
+    - rechazo
+    - no quiero
+    - negativo
+    - no es correcto
+
+- intent: bot_challenge
+  examples: |
+    - ¿eres un bot?
+    - ¿qué eres?
+    - ¿estoy hablando con un robot?
+    - ¿eres inteligente artificial?
+    - ¿me hablas un bot?
+    - ¿eres un asistente virtual?
+    - ¿estás automatizado?
+    - ¿eres una IA?
+    - ¿puedes razonar como humano?
+    - ¿quién eres?
+
+- intent: no_access
+  examples: |
+    - no puedo ver eso
+    - no tengo acceso
+    - no se me permite
+    - no está disponible
+    - no puedo acceder
+    - me falta permiso
+    - no autorizado
+    - acceso denegado
+    - no puedo obtener esa información
+    - no tengo permiso para eso
