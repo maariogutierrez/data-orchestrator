@@ -71,6 +71,23 @@ services:
     networks:
       - appnet
 
+  chatbot:
+    build:
+      context: ../chatbot
+      dockerfile: Dockerfile
+    container_name: chatbot
+    ports:
+      - "5005:5005"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ../questions:/questions
+      - ../common_questions:/common_questions
+    working_dir: /app
+    networks:
+      - appnet
+
 volumes:
   esdata:
   mongodata:

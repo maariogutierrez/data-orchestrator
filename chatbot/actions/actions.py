@@ -21,7 +21,6 @@ import os
 es = Elasticsearch(hosts=["http://elasticsearch:9200"])
 
 
-
 def extract_value(response: dict):
     """Extrae el valor más relevante de la respuesta de Elasticsearch."""
     # Si hay agregaciones, devuelve el primer valor/buckets
@@ -48,32 +47,6 @@ questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questi
 with open(questions_path, "r", encoding="utf-8") as f:
     questions_data = json.load(f)
 uncommon_questions = questions_data.get("uncommon", {})
-
-class Hello(Action):
-
-    def name(self) -> Text:
-        return "action_hello"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        dispatcher.utter_message(text=f"Hola, es un placer poder hablar contigo, dime, ¿que se te ofrece?")
-        
-        return []
-    
-class Bye(Action):
-
-    def name(self) -> Text:
-        return "action_bye"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-            
-        dispatcher.utter_message(text=f"Espero haberte servido de ayuda, si necesitas algo más no dudes en volver a contactar conmigo.")
-        
-        return []
 
 class NumberofTrips(Action):
 
@@ -192,7 +165,6 @@ class AveragePassengersperTrip(Action):
     
 class MaxTripDistance(Action):
     
-    
     def name(self) -> Text:
         return "action_max_trip_distance"
 
@@ -200,7 +172,7 @@ class MaxTripDistance(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         intent = "Max trip distance"
-        questions_path = os.path.join(os.path.dirname(__file__), "../questions/questions.json")
+        questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
         uncommon_questions = questions_data.get("uncommon", {})
@@ -208,7 +180,7 @@ class MaxTripDistance(Action):
             if question==intent:
                 query = query_data.get("query", {})
                 try:
-                    response = es.search(**query)
+                    response = es.search(index="data",**query)
                     value = extract_value(response)
                 except Exception as e:
                     value="Error"
@@ -225,7 +197,7 @@ class AverageTripDuration(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         intent = "Average trip duration"
-        questions_path = os.path.join(os.path.dirname(__file__), "../questions/questions.json")
+        questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
         uncommon_questions = questions_data.get("uncommon", {})
@@ -233,7 +205,7 @@ class AverageTripDuration(Action):
             if question==intent:
                 query = query_data.get("query", {})
                 try:
-                    response = es.search(**query)
+                    response = es.search(index="data",**query)
                     value = extract_value(response)
                 except Exception as e:
                     value="Error"
@@ -250,7 +222,7 @@ class TripsperPickupLocation(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         intent = "Average trip duration"
-        questions_path = os.path.join(os.path.dirname(__file__), "../questions/questions.json")
+        questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
         uncommon_questions = questions_data.get("uncommon", {})
@@ -258,7 +230,7 @@ class TripsperPickupLocation(Action):
             if question==intent:
                 query = query_data.get("query", {})
                 try:
-                    response = es.search(**query)
+                    response = es.search(index="data",**query)
                     value = extract_value(response)
                 except Exception as e:
                     value="Error"
@@ -275,7 +247,7 @@ class AverageTipperPaymentType(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         intent = "Average tip per payment"
-        questions_path = os.path.join(os.path.dirname(__file__), "../questions/questions.json")
+        questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
         uncommon_questions = questions_data.get("uncommon", {})
@@ -283,7 +255,7 @@ class AverageTipperPaymentType(Action):
             if question==intent:
                 query = query_data.get("query", {})
                 try:
-                    response = es.search(**query)
+                    response = es.search(index="data",**query)
                     value = extract_value(response)
                 except Exception as e:
                     value="Error"
@@ -300,7 +272,7 @@ class RevenueperVendor(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         intent = "Revenue per vendor"
-        questions_path = os.path.join(os.path.dirname(__file__), "../questions/questions.json")
+        questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
         uncommon_questions = questions_data.get("uncommon", {})
@@ -308,7 +280,7 @@ class RevenueperVendor(Action):
             if question==intent:
                 query = query_data.get("query", {})
                 try:
-                    response = es.search(**query)
+                    response = es.search(index="data",**query)
                     value = extract_value(response)
                 except Exception as e:
                     value="Error" 

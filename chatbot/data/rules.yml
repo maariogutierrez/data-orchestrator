@@ -5,12 +5,12 @@ rules:
 - rule: Saludar cuando el usuario diga hola
   steps:
   - intent: hello
-  - action: action_hello
+  - action: utter_greet
 
 - rule: Despedirse cuando el usuario diga adiós
   steps:
   - intent: bye
-  - action: action_bye
+  - action: utter_goodbye
 
 - rule: Decir 'Soy un bot' cuando el usuario lo pregunte
   steps:
@@ -75,4 +75,4 @@ rules:
 - rule: Cuando no tenga acceso
   steps:
   - intent: no_access
-  - action: action_no_acceso
+  - action: utter_no_access
