@@ -2,12 +2,77 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: Saludar cuando el usuario diga hola
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - intent: hello
+  - action: action_hello
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: Despedirse cuando el usuario diga adiós
+  steps:
+  - intent: bye
+  - action: action_bye
+
+- rule: Decir 'Soy un bot' cuando el usuario lo pregunte
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Dar número total de viajes
+  steps:
+  - intent: numberoftrips
+  - action: action_number_of_trips
+
+- rule: Dar viajes por proveedor
+  steps:
+  - intent: tripspervendor
+  - action: action_trips_per_vendor
+
+- rule: Dar viajes por tipo de pago
+  steps:
+  - intent: tripsperpaymenttype
+  - action: action_trips_per_payment_type
+
+- rule: Dar distancia media de viajes
+  steps:
+  - intent: averagetripdistance
+  - action: action_average_trip_distance
+
+- rule: Dar ingresos totales
+  steps:
+  - intent: totalrevenue
+  - action: action_total_revenue
+
+- rule: Dar pasajeros medios por viaje
+  steps:
+  - intent: averagepassengerspertrip
+  - action: action_average_passengers_per_trip
+
+- rule: Dar máxima distancia de viaje
+  steps:
+  - intent: maxtripdistance
+  - action: action_max_trip_distance
+
+- rule: Dar duración media de viaje
+  steps:
+  - intent: averagetripduration
+  - action: action_average_trip_duration
+
+- rule: Dar viajes por ubicación de recogida
+  steps:
+  - intent: tripsperpickuplocation
+  - action: action_trips_per_pickup_location
+
+- rule: Dar propina media por tipo de pago
+  steps:
+  - intent: averagetipperpaymenttype
+  - action: action_average_tip_per_payment_type
+
+- rule: Dar ingresos por proveedor
+  steps:
+  - intent: revenuepervendor
+  - action: action_revenue_per_vendor
+
+- rule: Cuando no tenga acceso
+  steps:
+  - intent: no_access
+  - action: action_no_acceso

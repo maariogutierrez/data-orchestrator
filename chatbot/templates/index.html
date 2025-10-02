@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chatbot Mejorado</title>
+<style>
+#chatbox {
+  width: 400px;
+  height: 500px;
+  border: 1px solid black;
+  overflow-y: scroll;
+}
+#user-input {
+  width: 350px;
+}
+</style>
+</head>
+<body>
+<div id="chatbox"></div>
+<input type="text" id="user-input" placeholder="Escribe un mensaje..."
+       onkeydown="if (event.key === 'Enter') sendMessage()" />
+<button onclick="sendMessage()">Enviar</button>
+
+<script>
+function sendMessage() {
+  const userInput = document.getElementById("user-input").value;
+  const chatbox = document.getElementById("chatbox");
+  const userMessage = `<p><strong>Tú:</strong> ${userInput}</p>`;
+  chatbox.innerHTML += userMessage;
+  document.getElementById("user-input").value = "";
+
+  fetch("/chat", {
+    method: "POST",
+    body: JSON.stringify({ message: userInput }),
+    headers: { "Content-Type": "application/json" },
+  })
+  .then(response => response.json())
+  .then(data => {
+    const botMessage = `<p><strong>Bot:</strong> ${data.bot_response}</p>`;
+    chatbox.innerHTML += botMessage;
+    chatbox.scrollTop = chatbox.scrollHeight;
+  });
+}
+</script>
+</body>
+</html>
