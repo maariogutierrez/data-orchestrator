@@ -47,11 +47,6 @@ rules:
   - intent: averagepassengerspertrip
   - action: action_average_passengers_per_trip
 
-- rule: Dar máxima distancia de viaje
-  steps:
-  - intent: maxtripdistance
-  - action: action_max_trip_distance
-
 - rule: Dar duración media de viaje
   steps:
   - intent: averagetripduration
@@ -72,7 +67,8 @@ rules:
   - intent: revenuepervendor
   - action: action_revenue_per_vendor
 
-- rule: Cuando no tenga acceso
+- rule: Default fallback
   steps:
-  - intent: no_access
-  - action: utter_no_access
+    - intent: nlu_fallback
+    - action: action_default_fallback
+

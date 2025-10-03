@@ -16,30 +16,27 @@ from elasticsearch import Elasticsearch
 import csv
 import json
 import os
+import ast
 
 # Initialize the Elasticsearch client
 es = Elasticsearch(hosts=["http://elasticsearch:9200"])
 
 
-def extract_value(response: dict):
-    """Extrae el valor más relevante de la respuesta de Elasticsearch."""
-    # Si hay agregaciones, devuelve el primer valor/buckets
-    if "aggregations" in response:
-        agg = response["aggregations"]
-        # Tomar la primera agregación
-        agg_name, agg_data = next(iter(agg.items()))
-        if "value" in agg_data:
-            return agg_data["value"]  # Ej: promedio, suma, etc.
-        if "buckets" in agg_data:
-            return agg_data["buckets"]  # Lista de buckets
-        return agg_data
-
-    # Si no hay agregaciones, devolver el total de hits
-    if "hits" in response and "total" in response["hits"]:
-        return response["hits"]["total"]["value"]
-
-    # Si nada aplica, devolver todo
-    return response
+def extract_value(question, response: dict):
+    match question:
+        case "Average trip duration":
+            return response.get("aggregations", {}).get("avg_trip_duration", {}).get("value", 0)
+        case "Trips per pickup location":
+            buckets = response.get("aggregations", {}).get("trips_per_pu", {}).get("buckets", [])
+            return {bucket['key']: bucket['doc_count'] for bucket in buckets}
+        case "Average tip per payment type":
+            buckets = response.get("aggregations", {}).get("payment_type", {}).get("buckets", [])
+            return {bucket['key']: bucket['tip_amount']['value'] for bucket in buckets}
+        case "Revenue per vendor":
+            buckets = response.get("aggregations", {}).get("revenue_vendor", {}).get("buckets", [])
+            return {bucket['key']: bucket['total_revenue']['value'] for bucket in buckets}
+        case _:
+            return response
 
 
 
@@ -82,7 +79,7 @@ class TripsperVendor(Action):
                 if fila and fila[0] == "Trips per vendor":  
                     answer = fila[1]
             
-        dispatcher.utter_message(text=f"El número de viajes por conductor es {answer}")
+        dispatcher.utter_message(text=f"El proveedor 1 ha realizado {ast.literal_eval(answer).get(1, 0)} viajes y el proveedor 2 ha realizado {ast.literal_eval(answer).get(2, 0)} viajes")
         
         return []
 
@@ -102,7 +99,7 @@ class TripsperPaymentType(Action):
                 if fila and fila[0] == "Trips per payment type":  
                     answer = fila[1]
             
-        dispatcher.utter_message(text=f"El número de viajes por tipo de pago son: {answer}")
+        dispatcher.utter_message(text=f"Se han realizado {ast.literal_eval(answer).get(1, 0)} viajes con tipo de pago 1, {ast.literal_eval(answer).get(2, 0)} viajes con tipo de pago 2, {ast.literal_eval(answer).get(3, 0)} viajes con pago con tipo de pago 3 y {ast.literal_eval(answer).get(4, 0)} viajes con tipo de pago 4")
         
         return []
     
@@ -121,7 +118,7 @@ class AverageTripDistance(Action):
                 if fila and fila[0] == "Average trip distance":  
                     answer = fila[1]
             
-        dispatcher.utter_message(text=f"La distancia media recorrida por viaje es de {answer} kilómetros/viaje")
+        dispatcher.utter_message(text=f"La distancia media recorrida por viaje es de {round(float(answer),2)}km")
         
         return []
     
@@ -140,7 +137,7 @@ class TotalRevenue(Action):
                 if fila and fila[0] == "Total revenue":  
                     answer = fila[1]
             
-        dispatcher.utter_message(text=f"Los ingresos totales generados por los viajes son de {answer} €")
+        dispatcher.utter_message(text=f"Los ingresos totales generados por los viajes son de {round(float(answer),2)}€")
         
         return []
     
@@ -159,34 +156,9 @@ class AveragePassengersperTrip(Action):
                 if fila and fila[0] == "Average passengers per trip":  
                     answer = fila[1]
             
-        dispatcher.utter_message(text=f"El número medio de pasajeros por viaje es de {answer} personas")
+        dispatcher.utter_message(text=f"El número medio de pasajeros por viaje es de {round(float(answer),2)} personas")
         
-        return []
-    
-class MaxTripDistance(Action):
-    
-    def name(self) -> Text:
-        return "action_max_trip_distance"
-
-    def run(self, dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        intent = "Max trip distance"
-        questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
-        with open(questions_path, "r", encoding="utf-8") as f:
-            questions_data = json.load(f)
-        uncommon_questions = questions_data.get("uncommon", {})
-        for question, query_data in uncommon_questions.items():
-            if question==intent:
-                query = query_data.get("query", {})
-                try:
-                    response = es.search(index="data",**query)
-                    value = extract_value(response)
-                except Exception as e:
-                    value="Error"
-        dispatcher.utter_message(text=f"La máxima distancia recorrida en un viaje ha sido de {value} kilómetros")
-    
-        return []    
+        return []   
     
 class AverageTripDuration(Action):
 
@@ -209,7 +181,7 @@ class AverageTripDuration(Action):
                     value = extract_value(response)
                 except Exception as e:
                     value="Error"
-        dispatcher.utter_message(text=f"La duración media de los trayectos es de {int(value)/60} minutos")
+        dispatcher.utter_message(text=f"La duración media de los trayectos es de {round(float(value),2)} minutos")
     
         return []
     
@@ -231,11 +203,15 @@ class TripsperPickupLocation(Action):
                 query = query_data.get("query", {})
                 try:
                     response = es.search(index="data",**query)
-                    value = extract_value(response)
+                    value = extract_value(question, response)
                 except Exception as e:
                     value="Error"
-        dispatcher.utter_message(text=f"El número de viajes por localización de recogida son: {value}")
-        
+        message_parts = []
+        for i, key in enumerate(list(value.keys())[:10]):  
+            message_parts.append(f"Localización {key}: {value.get(key, 0)} viajes")
+
+        message_text = "La distribución de viajes por las 10 localizaciones de recogida más comunes es la siguiente: " + ". ".join(message_parts) + "."
+        dispatcher.utter_message(text=message_text)        
         return []
     
 class AverageTipperPaymentType(Action):
@@ -246,7 +222,7 @@ class AverageTipperPaymentType(Action):
     def run(self, dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        intent = "Average tip per payment"
+        intent = "Average tip per payment type"
         questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
@@ -256,10 +232,10 @@ class AverageTipperPaymentType(Action):
                 query = query_data.get("query", {})
                 try:
                     response = es.search(index="data",**query)
-                    value = extract_value(response)
+                    value = extract_value(question,response)
                 except Exception as e:
-                    value="Error"
-        dispatcher.utter_message(text=f"Las propinas medias por tipos de pago son de {value} €")
+                    value = "Error"
+        dispatcher.utter_message(text=f"La media de propina mediante método de pago 1 es {round(float(value.get(1,0).get('avg_tip',).get('value',)),2)}€. Mediante método de pago 2 es {round(float(value.get(2,0).get('avg_tip',).get('value',)),2)}€. Mediante método de pago 3 es {round(float(value.get(3,0).get('avg_tip',).get('value',)),2)}€. Mediante método de pago 4 es {round(float(value.get(4,0).get('avg_tip',).get('value',)),2)}€.")
     
         return []
     
@@ -281,23 +257,21 @@ class RevenueperVendor(Action):
                 query = query_data.get("query", {})
                 try:
                     response = es.search(index="data",**query)
-                    value = extract_value(response)
+                    value = extract_value(question, response)
                 except Exception as e:
                     value="Error" 
 
-        dispatcher.utter_message(text=f"Los ingresos generados por cada conductor son {value} € de media")
-        
+        dispatcher.utter_message(text=f"El proveedor 1 ha obtenido {round(float(value.get(1, 0)),2)}€ de beneficio y el proveedor 2 ha obtenido {round(float(value.get(2, 0)), 2)}€")        
         return []
-    
-class NoAcceso(Action):
+
+class ActionDefaultFallback(Action):
 
     def name(self) -> Text:
-        return "action_no_acceso"
+        return "action_default_fallback"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-            
-        dispatcher.utter_message(text=f"Lo siento, no tengo acceso a esa información.")
-        
+
+        dispatcher.utter_message(text="Lo siento, no tienes permiso para ver esa información o no entiendo tu consulta.")
         return []

@@ -8,10 +8,9 @@
         "Average passengers per trip": {"query": {"size": 0, "aggs": {"avg_passengers": {"avg": {"field": "passenger_count"}}}}}
     },
     "uncommon": {
-        "Max trip distance": {"query": {"size": 0, "aggs": {"max_distance": {"max": {"field": "trip_distance"}}}}},
-        "Average trip duration": {"query": {"size": 0, "aggs": {"avg_duration": {"avg": {"field": "trip_duration"}}}}},
-        "Trips per pickup location": {"query": {"size": 0, "aggs": {"trips_per_pu": {"terms": {"field": "PULocationID"}}}}},
-        "Average tip per payment type": {"query": {"size": 0, "aggs": {"avg_tip_payment": {"terms": {"field": "payment_type"}, "aggs": {"avg_tip": {"avg": {"field": "tip_amount"}}}}}}},
+        "Average trip duration": {"query": {"size":0,"aggs":{"avg_trip_duration":{"avg":{"script":{"source":"def fmt = java.time.format.DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss'); (java.time.LocalDateTime.parse(doc['tpep_dropoff_datetime.keyword'].value, fmt).atZone(java.time.ZoneId.of('UTC')).toInstant().toEpochMilli() - java.time.LocalDateTime.parse(doc['tpep_pickup_datetime.keyword'].value, fmt).atZone(java.time.ZoneId.of('UTC')).toInstant().toEpochMilli())/60000","lang":"painless"}}}}}},
+        "Trips per pickup location": {"query": {"size":0,"aggs":{"trips_per_pu":{"terms":{"field":"PULocationID","size":10}}}}},
+        "Average tip per payment type": {"query":{"size":0,"aggs":{"avg_tip_payment":{"terms":{"field":"payment_type","size":10},"aggs":{"avg_tip":{"avg":{"field":"tip_amount"}}}}}}},
         "Revenue per vendor": {"query": {"size": 0, "aggs": {"revenue_vendor": {"terms": {"field": "VendorID"}, "aggs": {"total_revenue": {"sum": {"field": "total_amount"}}}}}}}
     }
 }

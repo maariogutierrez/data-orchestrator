@@ -105,19 +105,6 @@ nlu:
     - Dime pasajeros promedio por trayecto.
     - ¿Cuál es la media de pasajeros por carrera?
 
-- intent: maxtripdistance
-  examples: |
-    - ¿Cuál fue el viaje más largo?
-    - Dime la distancia máxima registrada.
-    - ¿Qué trayecto tuvo más kilómetros?
-    - Dame el recorrido más extenso.
-    - ¿Cuál es la carrera con mayor distancia?
-    - Muéstrame el trayecto más largo.
-    - ¿Qué viaje recorrió más kilómetros?
-    - Dime la distancia máxima en los datos.
-    - ¿Cuál es el viaje más extenso?
-    - ¿Qué trayecto fue el más largo?
-
 - intent: averagetripduration
   examples: |
     - ¿Cuál es la duración media de los viajes?
@@ -169,6 +156,7 @@ nlu:
     - Dame la distribución de ingresos por proveedor.
     - ¿Qué vendor generó más ingresos?
     - Dime ingresos por proveedor.
+
 - intent: affirm
   examples: |
     - sí
@@ -207,16 +195,3 @@ nlu:
     - ¿eres una IA?
     - ¿puedes razonar como humano?
     - ¿quién eres?
-
-- intent: no_access
-  examples: |
-    - no puedo ver eso
-    - no tengo acceso
-    - no se me permite
-    - no está disponible
-    - no puedo acceder
-    - me falta permiso
-    - no autorizado
-    - acceso denegado
-    - no puedo obtener esa información
-    - no tengo permiso para eso
