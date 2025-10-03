@@ -38,9 +38,8 @@ es = Elasticsearch([ES_URI])
 if not es.indices.exists(index=ES_INDEX):
     es.indices.create(index=ES_INDEX)
     print(f"Índice '{ES_INDEX}' creado en Elasticsearch.")
-
-# Insertamos los documentos
-actions = [{"_index": ES_INDEX, "_source": record} for record in records_for_es]
-helpers.bulk(es, actions)
-print(f"CSV cargado en Elasticsearch ({len(records_for_es)} documentos).")
+    # Insertamos los documentos
+    actions = [{"_index": ES_INDEX, "_source": record} for record in records_for_es]
+    helpers.bulk(es, actions)
+    print(f"CSV cargado en Elasticsearch ({len(records_for_es)} documentos).")
 
