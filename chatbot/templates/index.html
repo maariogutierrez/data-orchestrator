@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Asistente Virtual - Taxi Data</title>
   <style>
-
     body {
       font-family: "Segoe UI", Arial, sans-serif;
       background-image: url("https://cdn7.dissolve.com/p/D1089_173_325/D1089_173_325_1200.jpg");
@@ -134,7 +133,7 @@
 <body>
   <header>
     <h1>Asistente Virtual - Taxi Data</h1>
-    <button class="help-button">Ayuda</button>
+    <button class="help-button" onclick="openHelp()">Ayuda</button>
   </header>
 
   <div id="chatbox"></div>
@@ -169,6 +168,10 @@
         .catch(() => {
           chatbox.innerHTML += `<p class="message bot"><em>(Error de conexión con el servidor)</em></p>`;
         });
+    }
+
+    function openHelp() {
+      window.open("https://github.com/maariogutierrez/data-orchestrator", "_blank");
     }
   </script>
 </body>
