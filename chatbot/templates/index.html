@@ -1,45 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<title>Chatbot Mejorado</title>
-<style>
-#chatbox {
-  width: 400px;
-  height: 500px;
-  border: 1px solid black;
-  overflow-y: scroll;
-}
-#user-input {
-  width: 350px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <title>Asistente Virtual - Taxi Data</title>
+  <style>
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-image: url("https://cdn7.dissolve.com/p/D1089_173_325/D1089_173_325_1200.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    header {
+      background-color: rgba(0, 74, 173, 0.9);
+      color: white;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 0.8rem 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+    }
+
+    .help-button {
+      position: absolute;
+      right: 40px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .help-button:hover {
+      background-color: #005ec2;
+    }
+
+    #chatbox {
+      width: 400px;
+      height: 500px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      overflow-y: auto;
+      margin-top: 30px;
+      padding: 15px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .message {
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .user {
+      text-align: right;
+      color: #004aad;
+    }
+
+    .bot {
+      text-align: left;
+      color: #333;
+    }
+
+    #input-area {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      z-index: 2;
+      position: relative;
+    }
+
+    #user-input {
+      width: 320px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #004aad;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #003780;
+    }
+  </style>
 </head>
+
 <body>
-<div id="chatbox"></div>
-<input type="text" id="user-input" placeholder="Escribe un mensaje..."
-       onkeydown="if (event.key === 'Enter') sendMessage()" />
-<button onclick="sendMessage()">Enviar</button>
+  <header>
+    <h1>Asistente Virtual - Taxi Data</h1>
+    <button class="help-button">Ayuda</button>
+  </header>
 
-<script>
-function sendMessage() {
-  const userInput = document.getElementById("user-input").value;
-  const chatbox = document.getElementById("chatbox");
-  const userMessage = `<p><strong>Tú:</strong> ${userInput}</p>`;
-  chatbox.innerHTML += userMessage;
-  document.getElementById("user-input").value = "";
+  <div id="chatbox"></div>
 
-  fetch("/chat", {
-    method: "POST",
-    body: JSON.stringify({ message: userInput }),
-    headers: { "Content-Type": "application/json" },
-  })
-  .then(response => response.json())
-  .then(data => {
-    const botMessage = `<p><strong>Bot:</strong> ${data.bot_response}</p>`;
-    chatbox.innerHTML += botMessage;
-    chatbox.scrollTop = chatbox.scrollHeight;
-  });
-}
-</script>
+  <div id="input-area">
+    <input type="text" id="user-input" placeholder="Escriba su consulta..." 
+           onkeydown="if (event.key === 'Enter') sendMessage()" />
+    <button onclick="sendMessage()">Enviar</button>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById("user-input");
+      const chatbox = document.getElementById("chatbox");
+      const message = input.value.trim();
+      if (!message) return;
+
+      chatbox.innerHTML += `<p class="message user"><strong>Tú:</strong> ${message}</p>`;
+      input.value = "";
+
+      fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const botMessage = data.bot_response || "(sin respuesta)";
+          chatbox.innerHTML += `<p class="message bot"><strong>Bot:</strong> ${botMessage}</p>`;
+          chatbox.scrollTop = chatbox.scrollHeight;
+        })
+        .catch(() => {
+          chatbox.innerHTML += `<p class="message bot"><em>(Error de conexión con el servidor)</em></p>`;
+        });
+    }
+  </script>
 </body>
 </html>
