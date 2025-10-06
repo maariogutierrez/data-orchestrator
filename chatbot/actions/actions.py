@@ -177,11 +177,11 @@ class AverageTripDuration(Action):
             if question==intent:
                 query = query_data.get("query", {})
                 try:
-                    response = es.search(index="data",**query)
-                    value = extract_value(response)
+                    response = es.search(index="data",body=query)
+                    value = round(float(extract_value(question, response)),2)
                 except Exception as e:
                     value="Error"
-        dispatcher.utter_message(text=f"La duración media de los trayectos es de {round(float(value),2)} minutos")
+        dispatcher.utter_message(text=f"La duración media de los trayectos es de {value} minutos")
     
         return []
     
@@ -232,11 +232,11 @@ class AverageTipperPaymentType(Action):
                 query = query_data.get("query", {})
                 try:
                     response = es.search(index="data",**query)
-                    value = extract_value(question,response)
+                    value = response
                 except Exception as e:
                     value = "Error"
-        dispatcher.utter_message(text=f"La media de propina mediante método de pago 1 es {round(float(value.get(1,0).get('avg_tip',).get('value',)),2)}€. Mediante método de pago 2 es {round(float(value.get(2,0).get('avg_tip',).get('value',)),2)}€. Mediante método de pago 3 es {round(float(value.get(3,0).get('avg_tip',).get('value',)),2)}€. Mediante método de pago 4 es {round(float(value.get(4,0).get('avg_tip',).get('value',)),2)}€.")
-    
+        dispatcher.utter_message(text=f"Medias de propina: método 1: {round(float(value.get('aggregations', {}).get('avg_tip_payment', {}).get('buckets', [{}])[0].get('avg_tip', {}).get('value', 0)), 2)}€, método 2: {round(float(value.get('aggregations', {}).get('avg_tip_payment', {}).get('buckets', [{}])[1].get('avg_tip', {}).get('value', 0)), 2)}€, método 3: {round(float(value.get('aggregations', {}).get('avg_tip_payment', {}).get('buckets', [{}])[2].get('avg_tip', {}).get('value', 0)), 2)}€, método 4: {round(float(value.get('aggregations', {}).get('avg_tip_payment', {}).get('buckets', [{}])[3].get('avg_tip', {}).get('value', 0)), 2)}€.")
+
         return []
     
 class RevenueperVendor(Action):
