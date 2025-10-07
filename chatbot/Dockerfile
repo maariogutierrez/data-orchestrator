@@ -24,4 +24,6 @@ COPY . /app
 EXPOSE 5005
 
 # Comando por defecto
-CMD ["rasa", "run", "actions"]
+RUN apt-get update && apt-get install -y netcat-openbsd
+RUN chmod +x /app/start.sh
+CMD ["bash", "/app/start.sh"]
