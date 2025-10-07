@@ -2,156 +2,179 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Asistente Virtual - Taxi Data</title>
+  <title>Chati</title>
   <style>
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background-image: url("https://cdn7.dissolve.com/p/D1089_173_325/D1089_173_325_1200.jpg");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background-color: #1A1A1A;
       margin: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       height: 100vh;
-      position: relative;
-      overflow: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: 0;
-    }
-
-    header {
-      background-color: rgba(0, 74, 173, 0.9);
-      color: white;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      padding: 0.8rem 0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 2;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      letter-spacing: 0.5px;
-    }
-
-    .help-button {
-      position: absolute;
-      right: 40px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 8px 16px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 0.9rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .help-button:hover {
-      background-color: #005ec2;
+      color: #CCCCCC;
     }
 
     #chatbox {
-      width: 400px;
-      height: 500px;
-      border-radius: 10px;
-      background-color: rgba(255, 255, 255, 0.95);
-      border: 1px solid #ddd;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      width: 70%;
+      max-width: 750px;
+      height: 70vh;
       overflow-y: auto;
-      margin-top: 30px;
-      padding: 15px;
-      z-index: 2;
-      position: relative;
+      margin-top: 25px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
     }
 
     .message {
-      margin: 8px 0;
-      line-height: 1.4;
+      margin: 12px 0;
+      padding: 12px 16px;
+      border-radius: 10px;
+      line-height: 1.5;
+      max-width: 85%;
+      word-wrap: break-word;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.4s ease forwards;
     }
 
     .user {
-      text-align: right;
-      color: #004aad;
+      background-color: #2E2E2E;
+      align-self: flex-end;
+      margin-left: auto;
     }
 
     .bot {
-      text-align: left;
-      color: #333;
+      align-self: flex-start;
+      margin-right: auto;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     #input-area {
-      margin-top: 15px;
+      width: 70%;
+      max-width: 750px;
       display: flex;
       justify-content: center;
-      gap: 5px;
-      z-index: 2;
-      position: relative;
+      align-items: center;
+      padding: 6px 8px;
+      background-color: #2E2E2E;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+      margin: 15px 0 25px 0;
     }
 
     #user-input {
-      width: 320px;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #bbb;
-      font-size: 14px;
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background-color: transparent;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+    }
+
+    #user-input::placeholder {
+      color: #888;
     }
 
     button {
-      padding: 10px 15px;
-      background-color: #004aad;
+      background-color: #ffffff;
       border: none;
-      color: white;
-      border-radius: 5px;
+      color: #000;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
       cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      margin-right: 8px;
     }
 
     button:hover {
-      background-color: #003780;
+      background-color: #e1e1e1;
+    }
+
+    #chatbox::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #chatbox::-webkit-scrollbar-thumb {
+      background-color: #555;
+      border-radius: 3px;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>Asistente Virtual - Taxi Data</h1>
-    <button class="help-button" onclick="openHelp()">Ayuda</button>
-  </header>
+  <!-- Pantalla de carga -->
+  <div id="loading-screen" style="
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: #1A1A1A;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 24px;
+      z-index: 9999;
+  ">
+    Accediendo a Chati...
+  </div>
 
   <div id="chatbox"></div>
 
   <div id="input-area">
-    <input type="text" id="user-input" placeholder="Escriba su consulta..." 
-           onkeydown="if (event.key === 'Enter') sendMessage()" />
-    <button onclick="sendMessage()">Enviar</button>
+    <input
+      type="text"
+      id="user-input"
+      placeholder="Escribe un mensaje o help para más información..."
+      onkeydown="if (event.key === 'Enter') sendMessage()" />
+    <button onclick="sendMessage()">↑</button>
   </div>
 
   <script>
+    function appendMessage(content, sender) {
+      const chatbox = document.getElementById("chatbox");
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+      msg.innerHTML = content;
+      chatbox.appendChild(msg);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
     function sendMessage() {
       const input = document.getElementById("user-input");
-      const chatbox = document.getElementById("chatbox");
       const message = input.value.trim();
       if (!message) return;
-
-      chatbox.innerHTML += `<p class="message user"><strong>Tú:</strong> ${message}</p>`;
+      if (message === 'help') {
+        appendMessage(message, "user")
+        input.value = "";
+        openHelp(); 
+        return;
+      }
+      if (message === 'clear') {
+        const chatbox = document.getElementById("chatbox");
+        chatbox.innerHTML = "";
+        input.value = "";
+        appendMessage("¡Hola! Soy Chati<br>¿En qué puedo ayudarte hoy?", "bot");
+        return;
+      }
+      appendMessage(message, "user");
       input.value = "";
 
       fetch("/chat", {
@@ -162,17 +185,42 @@
         .then((res) => res.json())
         .then((data) => {
           const botMessage = data.bot_response || "(sin respuesta)";
-          chatbox.innerHTML += `<p class="message bot"><strong>Bot:</strong> ${botMessage}</p>`;
-          chatbox.scrollTop = chatbox.scrollHeight;
+          appendMessage(botMessage, "bot");
         })
         .catch(() => {
-          chatbox.innerHTML += `<p class="message bot"><em>(Error de conexión con el servidor)</em></p>`;
+          appendMessage("<em>(Error de conexión con el servidor)</em>", "bot");
         });
     }
 
     function openHelp() {
-      window.open("https://github.com/maariogutierrez/data-orchestrator", "_blank");
+      const helpMessage = `
+        <strong>Consultas disponibles:</strong><br><br>
+        • Número de viajes: Total de viajes registrados.<br>
+        • Viajes por proveedor: Distribución de viajes según el proveedor.<br>
+        • Viajes por tipo de pago: Número de viajes por método de pago.<br>
+        • Distancia media de los viajes: Promedio de la distancia recorrida por viaje.<br>
+        • Ingresos totales: Suma total de ingresos generados.<br>
+        • Pasajeros medios por viaje: Promedio de pasajeros por viaje.<br>
+        • Duración media de los viajes: Promedio de tiempo de cada viaje.<br>
+        • Viajes por ubicación de recogida: Conteo de viajes según la ubicación inicial.<br>
+        • Propina media por tipo de pago: Promedio de propinas según el método de pago.<br>
+        • Ingresos por proveedor: Total de ingresos generados por cada proveedor.<br><br>
+        <em>Más información:</em> 
+        <a href="https://github.com/maariogutierrez/data-orchestrator" target="_blank" style="color:#00a67e;">Repositorio en GitHub</a>
+      `;
+      appendMessage(helpMessage, "bot");
     }
+
+    window.onload = function() {
+      // Simular un pequeño delay de carga
+      setTimeout(() => {
+        // Ocultar pantalla de carga
+        document.getElementById("loading-screen").style.display = "none";
+        // Mostrar mensaje de bienvenida
+        appendMessage("¡Hola! Soy Chati<br>¿En qué puedo ayudarte hoy?", "bot");
+      }, 1500); // 1.5 segundos de carga
+    };
   </script>
 </body>
+
 </html>
