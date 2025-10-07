@@ -18,6 +18,8 @@ import json
 import os
 import ast
 
+from .location_mapping import location_mapping
+
 # Initialize the Elasticsearch client
 es = Elasticsearch(hosts=["http://elasticsearch:9200"])
 
@@ -193,7 +195,7 @@ class TripsperPickupLocation(Action):
     def run(self, dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        intent = "Average trip duration"
+        intent = "Trips per pickup location"
         questions_path = os.path.join(os.path.dirname(__file__), "../../questions/questions.json")
         with open(questions_path, "r", encoding="utf-8") as f:
             questions_data = json.load(f)
@@ -208,7 +210,8 @@ class TripsperPickupLocation(Action):
                     value="Error"
         message_parts = []
         for i, key in enumerate(list(value.keys())[:10]):  
-            message_parts.append(f"Localización {key}: {value.get(key, 0)} viajes")
+            street_name = location_mapping.get(int(key), f"Localización {key}")
+            message_parts.append(f"{street_name}: {value.get(key, 0)} viajes")
 
         message_text = "La distribución de viajes por las 10 localizaciones de recogida más comunes es la siguiente: " + ". ".join(message_parts) + "."
         dispatcher.utter_message(text=message_text)        
