@@ -40,9 +40,7 @@ services:
       - appnet
 
   api_common_questions:
-    build: 
-      context: ..
-      dockerfile: apis/Dockerfile
+    image: maariogutierrez/api_common_questions:latest
     volumes:
       - ../questions:/questions
       - ../common_questions:/common_questions
@@ -55,9 +53,7 @@ services:
       - appnet
 
   ingestion:
-    build:
-      context: ../ingestion
-      dockerfile: Dockerfile
+    image: maariogutierrez/ingestion:latest
     container_name: ingestion
     depends_on:
       mongodb:
@@ -72,9 +68,7 @@ services:
       - appnet
 
   chatbot:
-    build:
-      context: ../chatbot
-      dockerfile: Dockerfile
+    image: maariogutierrez/chatbot:latest
     container_name: chatbot
     ports:
       - "5005:5005"
