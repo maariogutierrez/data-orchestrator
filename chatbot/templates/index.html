@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Chati</title>
+  <title>Txati</title>
   <style>
     body {
       font-family: "Inter", "Segoe UI", Arial, sans-serif;
@@ -133,7 +133,7 @@
       font-size: 24px;
       z-index: 9999;
   ">
-    Accediendo a Chati...
+    Accediendo a Txati...
   </div>
 
   <div id="chatbox"></div>
@@ -171,7 +171,7 @@
         const chatbox = document.getElementById("chatbox");
         chatbox.innerHTML = "";
         input.value = "";
-        appendMessage("¡Hola! Soy Chati<br>¿En qué puedo ayudarte hoy?", "bot");
+        appendMessage("¡Hola! Soy Txati<br>¿En qué puedo ayudarte hoy?", "bot");
         return;
       }
       appendMessage(message, "user");
@@ -217,7 +217,7 @@
         // Ocultar pantalla de carga
         document.getElementById("loading-screen").style.display = "none";
         // Mostrar mensaje de bienvenida
-        appendMessage("¡Hola! Soy Chati<br>¿En qué puedo ayudarte hoy?", "bot");
+        appendMessage("¡Hola! Soy Txati<br>¿En qué puedo ayudarte hoy?", "bot");
       }, 1500); // 1.5 segundos de carga
     };
   </script>
