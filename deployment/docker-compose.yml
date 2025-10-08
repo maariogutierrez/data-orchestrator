@@ -89,6 +89,19 @@ services:
     networks:
       - appnet
 
+  gestures:
+    build:
+      context: ../gestures
+      dockerfile: Dockerfile
+    container_name: gestures
+    volumes:
+      - ../gestures/src:/app/src
+    devices:
+      - /dev/video0:/dev/video0  # Permite acceso a cámara (en Linux) Tendremos que poner en el READ.me que solo funcionará en Linux
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+
 volumes:
   esdata:
   mongodata:

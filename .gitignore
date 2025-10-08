@@ -3,3 +3,7 @@ ingestion/data/*
 
 # Excepto el archivo .gitkeep para mantener la carpeta
 !ingestion/data/.gitkeep
+
+# Ignorar enventanado
+env/
+
