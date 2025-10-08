@@ -66,8 +66,6 @@ services:
         condition: service_healthy
     volumes:
       - ../ingestion:/app
-    working_dir: /app/src
-    command: python load_data.py
     networks:
       - appnet
 
