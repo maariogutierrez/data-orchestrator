@@ -3,6 +3,7 @@ import csv
 import json
 from logger import get_logger
 import os
+import time
 
 logger = get_logger(__name__)
 
@@ -41,15 +42,10 @@ def common_questions(index):
     results = []
     for question, query_data in common_questions.items():
         query = query_data.get("query", {})
-        try:
-            response = es.search(index=index, **query)
-            value = extract_value(question, response)  
-            results.append([question, value])
-            logger.info("Question: %s | Result: %s", question, value)
-        except Exception as e:
-            print(e)
-            logger.error("Error processing question '%s': %s", question, str(e))
-            results.append([question, "Error"])
+        response = es.search(index=index, **query)
+        value = extract_value(question, response)  
+        results.append([question, value])
+        logger.info("Question: %s | Result: %s", question, value)
 
     # Save results to CSV
     csv_path = os.path.join(os.path.dirname(__file__), "../common_questions/answers.csv")
@@ -62,4 +58,9 @@ def common_questions(index):
 
 if __name__ == "__main__":
     index_name = "data"
-    common_questions(index_name)
+    try:
+        common_questions(index_name)
+    except:
+        logger.info("There was an error. Trying again in 10 seconds...")
+        time.sleep(10)
+        common_questions(index_name)
