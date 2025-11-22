@@ -1,49 +1,58 @@
 # Data Orchestrator
 
-Data Orchestrator automatiza la ingesta de datos de taxis desde un CSV hacia MongoDB (backup) y Elasticsearch (base principal). Integra un chatbot hecho con Rasa que responde preguntas diferenciando entre comunes (respuestas desde CSV) y no comunes (consultas directas a Elasticsearch), con una interfaz web en Flask.
+Data Orchestrator automates the ingestion of taxi data from a CSV into MongoDB (backup) and Elasticsearch (primary). It integrates a Rasa chatbot that answers questions by distinguishing between common ones (responses taken from a CSV) and uncommon ones (direct queries to Elasticsearch), and provides a Flask-based web interface.
 
-## Funcionalidades principales
+## Main features
 
-- [Ingesta automática de CSV](ingestion/src/load_data.py) → MongoDB y Elasticsearch.
+- [Automatic CSV ingestion](ingestion/src/load_data.py) → MongoDB and Elasticsearch.
 
-- Kibana para consultas gráficas a Elasticsearch.
+- Kibana for graphical queries against Elasticsearch.
 
-- [API Common Questions](apis/common_questions_api.py) realiza consultas comunes a ElasticSearch cada 5 minutos y guarda respuestas en otro CSV.
+- [Common Questions API](apis/common_questions_api.py) performs common queries to Elasticsearch every 5 minutes and saves the answers into another CSV.
 
-- [Chatbot creado con Rasa](chatbot/actions/actions.py) que responde según si la pregunta es común o no.
+- [Rasa chatbot](chatbot/actions/actions.py) that replies depending on whether the question is a common one or not.
 
-- [Interfaz web en Flask](chatbot/app.py) para interactuar con el chatbot.
+- [Flask web interface](chatbot/app.py) to interact with the chatbot.
 
-## Arquitectura
+## Authors
+
+This project was developed by Sergio González, Jose María Martín, Juan Pérez and Mario Gutiérrez.
+
+## License
+
+This project is licensed under the MIT License — see the `LICENSE` file for details.
+
+## Architecture
 
 ![Arquitectura](arquitectura.png)
 
-## Despliegue con Docker
+## Deployment with Docker
 
-1. Clonar el repositorio y acceder a la carpeta de deployment
-``` bash
+1. Clone the repository and go to the `deployment` folder
+```bash
 git clone https://github.com/maariogutierrez/data-orchestrator.git
 cd data-orchestrator/deployment
 ```
 
-2. Ejecutar Docker Compose:
+2. Run Docker Compose:
 
-``` bash
+```bash
 docker-compose up -d
 ```
 
-3. Esperar a que se desplieguen todos los servicios.
+3. Wait for all services to start.
 
-``` bash
+```bash
 docker ps
-docker logs -f <id del contenedor del chatbot>
-```
-El servicio estará listo cuando observemos el log
-
-``` bash
-Servidor Rasa iniciado ✅
+docker logs -f <chatbot container id>
 ```
 
-4. Acceder a la interfaz del chatbot en: http://127.0.0.1:8001
+The service is ready when you see the log message:
+
+```bash
+Servidor RASA iniciado ✅
+```
+
+4. Access the chatbot interface at: http://127.0.0.1:8001
 
 [![Demo Video](thumbnail.png)](https://youtu.be/N2D1xSq7qSE?si=4YLaqi-P5IOD6SC5)
