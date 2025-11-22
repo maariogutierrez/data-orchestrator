@@ -18,10 +18,6 @@ Data Orchestrator automates the ingestion of taxi data from a CSV into MongoDB (
 
 This project was developed by Sergio González, Jose María Martín, Juan Pérez and Mario Gutiérrez.
 
-## License
-
-This project is licensed under the MIT License — see the `LICENSE` file for details.
-
 ## Architecture
 
 ![Arquitectura](arquitectura.png)
@@ -56,3 +52,7 @@ Servidor RASA iniciado ✅
 4. Access the chatbot interface at: http://127.0.0.1:8001
 
 [![Demo Video](thumbnail.png)](https://youtu.be/N2D1xSq7qSE?si=4YLaqi-P5IOD6SC5)
+
+## License
+
+This project is licensed under the MIT License — see the `LICENSE` file for details.
